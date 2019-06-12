@@ -22,6 +22,17 @@
         <!-- Post Content Column -->
         <div class="col-lg-8">
 
+            <form action="/posts/{{$post->id}}/edit">
+                <button type="submit" class="btn btn-primary">Edit</button>
+                <input type="hidden" value="{{ Session::token() }}" name="_token">
+            </form>
+            <br>
+            <form action="/posts/{{$post->id}}" method="post">
+                @method('DELETE')
+                <button type="submit" class="btn btn-primary">Delete</button>
+                <input type="hidden" value="{{ Session::token() }}" name="_token">
+            </form>
+
             <!-- Title -->
             <h2 class="mt-4">{{ $post->title }}</h2>
 
@@ -42,6 +53,7 @@
                         <div class="form-group">
                             <textarea name="body" class="form-control" rows="3"></textarea>
                         </div>
+                        <input  type="hidden" name="post_id" value="{{ $post->id }}" >
                         <button type="submit" class="btn btn-primary">Submit</button>
                         <input type="hidden" value="{{ Session::token() }}" name="_token">
                     </form>
@@ -49,15 +61,19 @@
             </div>
 
             <!-- Single Comment -->
+            @if(Auth::check())
+
+            @foreach($post->comments as $comment)
             <div class="media mb-4">
                 <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
                 <div class="media-body">
-                    <h5 class="mt-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at,
-                        tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                    <h5 class="mt-0">{{ $comment->body }}
                     </h5>
                 </div>
             </div>
+                @endforeach()
 
+            @endif
         </div>
 
     </div>

@@ -38,7 +38,25 @@ Route::group(['middleware' => ['web']], function () {
        'as' => 'comment.store',
        'middleware' => 'auth'
     ]);
-//
+
+    Route::get('/posts/{post}/edit', [
+        'uses' => 'PostController@edit',
+        'as' => 'posts.edit',
+        'middleware' => 'auth'
+    ]);
+
+    Route::put('/posts/{post}', [
+        'uses' => 'PostController@update',
+        'as' => 'posts.update',
+        'middleware' => 'auth'
+    ]);
+
+    Route::delete('/posts/{post}', [
+        'uses' => 'PostController@destroy',
+        'as' => 'posts.destroy',
+        'middleware' => 'auth'
+    ]);
+
 //    Route::resource('posts', 'PostController');
 
     Route::resource('post.comment', 'CommentController');

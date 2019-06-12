@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use App\Http\Requests\CommentPostRequest;
 use App\Post;
 use Illuminate\Http\Request;
@@ -34,9 +35,12 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CommentPostRequest $request, Post $post)
+    public function store(CommentPostRequest $request)
     {
+
         $request->persist();
+
+        return redirect()->route('home');
 
     }
 

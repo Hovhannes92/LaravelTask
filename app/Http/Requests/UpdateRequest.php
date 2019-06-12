@@ -2,12 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Comment;
-use App\Post;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class CommentPostRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,23 +25,22 @@ class CommentPostRequest extends FormRequest
     public function rules()
     {
         return [
-            'body' => 'required|unique:posts|max:255',
+            'title' => 'required|unique:posts,id|max:255'.$this->post->id,
+            'body' => 'required',
         ];
     }
 
-    public function persist()
-    {
+    public function persist(){
 
-//      dd($this->all());
+//        dd($this->all());
 
-        Auth::user()->comments()->create($this->all());
+        $this->post->update($this->all());
 
         return $this;
-
     }
 
-    public function getComment()
+    public function getPost()
     {
-        return $this->comment;
+        return $this->post;
     }
 }

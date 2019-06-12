@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\UpdateRequest;
 use App\Post;
+use App\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,8 +18,9 @@ class PostController extends Controller
      */
     public function index()
     {
+        $comments = Comment::all();
         $posts = Post::all();
-        return view('home', ['posts' => $posts]);
+        return view('home', ['posts' => $posts, 'comments' => $comments]);
     }
 
     /**
@@ -38,6 +41,8 @@ class PostController extends Controller
      */
     public function store(CreatePostRequest $request)
     {
+
+
         $request->persist();
 
         return redirect()->route('home');
@@ -60,9 +65,10 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($post_id)
     {
-        //
+        $post = Post::where('id', $post_id)->first();
+        return view('edit', ['post' => $post]);
     }
 
     /**
@@ -72,9 +78,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, Post $post)
     {
-        //
+                $request->persist();
+
+                return redirect()->route('home');
     }
 
     /**
@@ -83,8 +91,10 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        return redirect()->route('home');
     }
 }
