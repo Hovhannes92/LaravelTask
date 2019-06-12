@@ -2,7 +2,10 @@
 
 @section('content')
 
-    <a class="btn btn-primary" href="{{ route('post.create') }}" role="button">Create New Post</a>
+    <form action="/posts/create">
+        <button type="submit" class="btn btn-primary">Create New Post</button>
+        <input type="hidden" value="{{ Session::token() }}" name="_token">
+    </form>
 
 <div class="container">
     <div class="row justify-content-center">

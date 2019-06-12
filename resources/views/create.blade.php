@@ -9,7 +9,7 @@
 
                 <h1>Create post</h1>
 
-                <form action="{{ route('post.store') }}" method="post">
+                <form action="/posts" method="post">
 
                     <div class="form-group has-error">
                         <label for="title">Post Title</label>

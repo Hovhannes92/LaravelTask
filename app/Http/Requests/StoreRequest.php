@@ -7,7 +7,7 @@ use App\Post;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class CommentPostRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -36,7 +36,12 @@ class CommentPostRequest extends FormRequest
 
 //      dd($this->all());
 
-        Auth::user()->comments()->create($this->all());
+        //@TODO check array_merge
+        Auth::user()->comments()->create(array_merge([
+            'post_id' => $this->post->id,
+        ],
+            $this->all()
+        ));
 
         return $this;
 

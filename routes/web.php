@@ -18,50 +18,18 @@ Route::group(['middleware' => ['web']], function () {
 
     Auth::routes();
 
-    Route::get('/home', 'PostController@index')->name('home');
+});
 
-    Route::get('/postcreate', [
-        'uses' => 'PostController@create',
-        'as' => 'post.create',
-        'middleware' => 'auth'
-    ]);
+Route::group(['middleware' => ['web','auth']], function () {
 
-    Route::post('/poststore', [
-        'uses' => 'PostController@store',
-        'as' => 'post.store',
-        'middleware' => 'auth'
-    ]);
+    // @TODO make group for auth middleware  ... done
 
 
-    Route::post('/comment/store', [
-       'uses' => 'CommentController@store',
-       'as' => 'comment.store',
-       'middleware' => 'auth'
-    ]);
+    // @TODO post as resource controller ... done
+    Route::resource('posts', 'PostController');
 
-    Route::get('/posts/{post}/edit', [
-        'uses' => 'PostController@edit',
-        'as' => 'posts.edit',
-        'middleware' => 'auth'
-    ]);
-
-    Route::put('/posts/{post}', [
-        'uses' => 'PostController@update',
-        'as' => 'posts.update',
-        'middleware' => 'auth'
-    ]);
-
-    Route::delete('/posts/{post}', [
-        'uses' => 'PostController@destroy',
-        'as' => 'posts.destroy',
-        'middleware' => 'auth'
-    ]);
-
-//    Route::resource('posts', 'PostController');
-
-    Route::resource('post.comment', 'CommentController');
-
-
-
+    //@TODO except not used routes  ...done
+    Route::resource('post.comment', 'CommentController')->except('index','create','show', 'edit', 'update', 'delete')->middleware('auth');
 
 });
+

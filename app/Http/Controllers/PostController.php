@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\DataProviders\Post\IndexDataProvider;
 use App\Http\Requests\CreatePostRequest;
-use App\Http\Requests\UpdateRequest;
+use App\Http\Requests\IndexPostRequest;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\DestroyPostRequest;
+use App\Http\Requests\EditPostRequest;
+use App\Http\Requests\ShowPostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Post;
 use App\Comment;
 use Illuminate\Http\Request;
@@ -11,16 +17,16 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+    // @TODO make request for controller all methods  ...done
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(IndexPostRequest $request, IndexDataProvider $dataProvider)
     {
-        $comments = Comment::all();
-        $posts = Post::all();
-        return view('home', ['posts' => $posts, 'comments' => $comments]);
+        //@TODO use dataProvider
+        return view('home', ['posts' => Post::with('comments')->get()]);
     }
 
     /**
@@ -28,7 +34,7 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(CreatePostRequest $request)
     {
         return view('create');
     }
@@ -39,13 +45,11 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreatePostRequest $request)
+    public function store(StorePostRequest $request)
     {
-
-
         $request->persist();
 
-        return redirect()->route('home');
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -54,7 +58,7 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(ShowPostRequest $request, Post $post)
     {
         //
     }
@@ -65,9 +69,10 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($post_id)
+    public function edit(EditPostRequest $request, Post $post)
     {
-        $post = Post::where('id', $post_id)->first();
+        //@TODO do with route binding ... done
+        $post->first();
         return view('edit', ['post' => $post]);
     }
 
@@ -78,11 +83,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post)
     {
                 $request->persist();
 
-                return redirect()->route('home');
+                return redirect()->route('posts.index');
     }
 
     /**
@@ -91,10 +96,10 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy(DestroyPostRequest $request, Post $post)
     {
         $post->delete();
 
-        return redirect()->route('home');
+        return redirect()->route('posts.index');
     }
 }

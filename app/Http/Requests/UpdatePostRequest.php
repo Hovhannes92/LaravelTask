@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class UpdateRequest extends FormRequest
+class UpdatePostRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,14 +25,12 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|unique:posts,id|max:255'.$this->post->id,
+            'title' => 'required|max:255|unique:posts,id,'.$this->post->id,
             'body' => 'required',
         ];
     }
 
     public function persist(){
-
-//        dd($this->all());
 
         $this->post->update($this->all());
 
