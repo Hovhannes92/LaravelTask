@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Comment;
 
+use App\Comment;
 use App\Post;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class StorePostRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,25 +27,28 @@ class StorePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|unique:posts|max:255',
-            'body' => 'required',
+            'body' => 'required|unique:posts|max:255',
         ];
     }
 
     public function persist()
     {
 
-        Auth::user()->posts()->create($this->all());
+//      dd($this->all());
 
+        //@TODO check array_merge
+        Auth::user()->comments()->create(array_merge([
+            'post_id' => $this->post->id,
+        ],
+            $this->all()
+        ));
 
+        return $this;
 
-           return $this;
     }
 
-    public function getPost()
+    public function getComment()
     {
-        return $this->post;
+        return $this->comment;
     }
-
-
 }

@@ -56,7 +56,6 @@
                         <div class="form-group">
                             <textarea name="body" class="form-control" rows="3"></textarea>
                         </div>
-                        <input  type="hidden" name="post_id" value="{{ $post->id }}" >
                         <button type="submit" class="btn btn-primary">Submit</button>
                         <input type="hidden" value="{{ Session::token() }}" name="_token">
                     </form>
@@ -86,6 +85,9 @@
 <!-- /.container -->
 
 @endforeach
+
+{{ $posts->onEachSide(5)->links() }}
+
 
 <!-- Footer -->
 <footer class="py-5 bg-dark">

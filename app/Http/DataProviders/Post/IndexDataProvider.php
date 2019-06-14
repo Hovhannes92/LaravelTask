@@ -5,6 +5,7 @@ namespace App\Http\DataProviders\Post;
 
 
 use App\Post;
+use App\Comment;
 
 class IndexDataProvider
 {
@@ -12,8 +13,8 @@ class IndexDataProvider
 
     public function prepareData()
     {
-        //@TODO load with lazyy loading comments
-        $this->posts = Post::all();
+        //@TODO load with lazyy loading comments ...done
+        $this->posts = Post::with('comments')->paginate(2);
 
         return $this;
     }

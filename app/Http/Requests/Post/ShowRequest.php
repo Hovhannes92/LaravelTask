@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Post;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
-class UpdatePostRequest extends FormRequest
+class ShowRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,20 +24,7 @@ class UpdatePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:255|unique:posts,id,'.$this->post->id,
-            'body' => 'required',
+            //
         ];
-    }
-
-    public function persist(){
-
-        $this->post->update($this->all());
-
-        return $this;
-    }
-
-    public function getPost()
-    {
-        return $this->post;
     }
 }

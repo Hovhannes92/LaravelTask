@@ -10,6 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
 Route::group(['middleware' => ['web']], function () {
 
     Route::get('/', function () {
@@ -18,18 +20,15 @@ Route::group(['middleware' => ['web']], function () {
 
     Auth::routes();
 
-});
+    Route::group(['middleware' => ['auth']], function () {
 
-Route::group(['middleware' => ['web','auth']], function () {
+        // @TODO post as resource controller ... done
+        Route::resource('posts', 'PostController');
 
-    // @TODO make group for auth middleware  ... done
+        //@TODO except not used routes  ...done
+        Route::resource('post.comment', 'CommentController')->only('store')->middleware('auth');
 
-
-    // @TODO post as resource controller ... done
-    Route::resource('posts', 'PostController');
-
-    //@TODO except not used routes  ...done
-    Route::resource('post.comment', 'CommentController')->except('index','create','show', 'edit', 'update', 'delete')->middleware('auth');
+    });
 
 });
 

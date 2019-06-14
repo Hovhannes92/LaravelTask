@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\DataProviders\Post\IndexDataProvider;
-use App\Http\Requests\CreatePostRequest;
-use App\Http\Requests\IndexPostRequest;
-use App\Http\Requests\StorePostRequest;
-use App\Http\Requests\DestroyPostRequest;
-use App\Http\Requests\EditPostRequest;
-use App\Http\Requests\ShowPostRequest;
-use App\Http\Requests\UpdatePostRequest;
+use App\Http\Requests\Post\CreateRequest;
+use App\Http\Requests\Post\IndexRequest;
+use App\Http\Requests\Post\StoreRequest;
+use App\Http\Requests\Post\DestroyRequest;
+use App\Http\Requests\Post\EditRequest;
+use App\Http\Requests\Post\ShowRequest;
+use App\Http\Requests\Post\UpdateRequest;
 use App\Post;
 use App\Comment;
 use Illuminate\Http\Request;
@@ -23,10 +23,12 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(IndexPostRequest $request, IndexDataProvider $dataProvider)
+    public function index(IndexRequest $request, IndexDataProvider $dataProvider)
     {
-        //@TODO use dataProvider
-        return view('home', ['posts' => Post::with('comments')->get()]);
+
+//        dd($dataProvider->prepareData()->getPosts());
+        //@TODO use dataProvider ...done
+        return view('home', ['posts' => $dataProvider->prepareData()->getPosts()]);
     }
 
     /**
@@ -34,7 +36,7 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(CreatePostRequest $request)
+    public function create(CreateRequest $request)
     {
         return view('create');
     }
@@ -45,7 +47,7 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePostRequest $request)
+    public function store(StoreRequest $request)
     {
         $request->persist();
 
@@ -58,7 +60,7 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(ShowPostRequest $request, Post $post)
+    public function show(ShowRequest $request, Post $post)
     {
         //
     }
@@ -69,9 +71,8 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(EditPostRequest $request, Post $post)
+    public function edit(EditRequest $request, Post $post)
     {
-        //@TODO do with route binding ... done
         $post->first();
         return view('edit', ['post' => $post]);
     }
@@ -83,11 +84,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePostRequest $request, Post $post)
+    public function update(UpdateRequest $request, Post $post)
     {
-                $request->persist();
+        $request->persist();
 
-                return redirect()->route('posts.index');
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -96,7 +97,7 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DestroyPostRequest $request, Post $post)
+    public function destroy(DestroyRequest $request, Post $post)
     {
         $post->delete();
 

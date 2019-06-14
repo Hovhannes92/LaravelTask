@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
-use App\Http\Requests\StoreRequest;
+use App\Http\Requests\Comment\StoreRequest;
 use App\Post;
 use Illuminate\Http\Request;
 
