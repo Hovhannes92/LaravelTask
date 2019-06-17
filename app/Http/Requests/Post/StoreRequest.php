@@ -34,9 +34,7 @@ class StoreRequest extends FormRequest
     public function persist()
     {
 
-        Auth::user()->posts()->create($this->all());
-
-
+        $this->post = Auth::user()->posts()->create($this->all());
 
            return $this;
     }

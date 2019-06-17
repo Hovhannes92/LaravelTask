@@ -73,6 +73,7 @@ class PostController extends Controller
      */
     public function edit(EditRequest $request, Post $post)
     {
+        $this->authorize('update', $post);
         $post->first();
         return view('edit', ['post' => $post]);
     }

@@ -14,7 +14,7 @@ class IndexDataProvider
     public function prepareData()
     {
         //@TODO load with lazyy loading comments ...done
-        $this->posts = Post::with('comments')->paginate(2);
+        $this->posts = Post::with('comments')->get();
 
         return $this;
     }
