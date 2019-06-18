@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\DataProviders\Post\IndexDataProvider;
+use App\Http\Requests\Post\DestroyRequest;
 use App\Http\Requests\Post\IndexRequest;
 use App\Http\Requests\Post\StoreRequest;
 use App\Http\Requests\Post\UpdateRequest;
@@ -67,7 +68,7 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(DestroyRequest $request, Post $post)
     {
         //
     }
