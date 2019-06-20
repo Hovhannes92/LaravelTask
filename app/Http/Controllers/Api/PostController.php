@@ -7,10 +7,12 @@ use App\Http\Requests\Post\DestroyRequest;
 use App\Http\Requests\Post\IndexRequest;
 use App\Http\Requests\Post\StoreRequest;
 use App\Http\Requests\Post\UpdateRequest;
+use App\Http\Resources\PostCollection;
 use App\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\Post as PostResource;
 
 class PostController extends Controller
 {
@@ -22,7 +24,8 @@ class PostController extends Controller
     public function index(IndexRequest $request, IndexDataProvider $dataProvider)
     {
 //        dd(Auth::user());
-        return response()->json(['posts' => $dataProvider->prepareData()->getPosts()]);
+        return PostResource::collection($dataProvider->prepareData()->getPosts());
+
     }
 
     /**
@@ -33,8 +36,7 @@ class PostController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $post = $request->persist()->getPost();
-        return response()->json(['post' => $post]);
+        return response()->json(['post' => $request->persist()->getPost()]);
 
     }
 
@@ -58,8 +60,7 @@ class PostController extends Controller
      */
     public function update(UpdateRequest $request, Post $post)
     {
-        $post = $request->persist();
-        return response()->json(['post' => $post]);
+        return response()->json(['post' => $request->persist()]);
     }
 
     /**
@@ -70,6 +71,8 @@ class PostController extends Controller
      */
     public function destroy(DestroyRequest $request, Post $post)
     {
-        //
+        $post->delete();
+
+        return response()->json(['post' => $post]);
     }
 }
