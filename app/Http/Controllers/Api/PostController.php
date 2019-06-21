@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Comment;
 use App\Http\DataProviders\Post\IndexDataProvider;
 use App\Http\Requests\Post\DestroyRequest;
 use App\Http\Requests\Post\IndexRequest;
 use App\Http\Requests\Post\StoreRequest;
 use App\Http\Requests\Post\UpdateRequest;
 use App\Http\Resources\PostCollection;
+use App\Http\Resources\ShowPost;
 use App\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Resources\Post as PostResource;
+use App\Http\Resources\IndexPost;
 
 class PostController extends Controller
 {
@@ -24,7 +26,7 @@ class PostController extends Controller
     public function index(IndexRequest $request, IndexDataProvider $dataProvider)
     {
 //        dd(Auth::user());
-        return PostResource::collection($dataProvider->prepareData()->getPosts());
+        return IndexPost::collection($dataProvider->prepareData()->getPosts());
 
     }
 
@@ -37,19 +39,19 @@ class PostController extends Controller
     public function store(StoreRequest $request)
     {
         return response()->json(['post' => $request->persist()->getPost()]);
-
     }
 
-//    /**
-//     * Display the specified resource.
-//     *
-//     * @param  int  $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function show($id)
-//    {
-//        //
-//    }
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Post $post)
+    {
+        return new ShowPost($post);
+
+    }
 
     /**
      * Update the specified resource in storage.

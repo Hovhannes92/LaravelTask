@@ -24,7 +24,19 @@ class ShowRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+
         ];
     }
+
+    public function persist()
+    {
+
+    }
+
+    public function getUser()
+    {
+
+    }
+
+
 }

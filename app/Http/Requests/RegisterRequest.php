@@ -33,7 +33,7 @@ class RegisterRequest extends FormRequest
 
     public function registerStore()
     {
-           $this->user = User::create(array_merge($this->all(),['api_token' => str_random(50)]));
+           $this->user = User::create($this->all());
             return $this;
     }
 
